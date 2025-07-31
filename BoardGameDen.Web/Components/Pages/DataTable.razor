@@ -1,0 +1,47 @@
+@inject IJSRuntime JSRuntime
+
+<table id="@Id" class="table table-striped table-bordered">
+    @ChildContent
+</table>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Id { get; set; } = $"table-{Guid.NewGuid()}";
+
+    private bool _initialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_initialized)
+        {
+            await InitializeDataTableAsync();
+            _initialized = true;
+        }
+    }
+
+    private async Task InitializeDataTableAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Id))
+        {
+            await JSRuntime.InvokeVoidAsync("dtUtils.init", $"#{Id}");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_initialized)
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("dtUtils.destroy", $"#{Id}");
+            }
+            catch (JSException ex)
+            {
+                Console.Error.WriteLine($"DataTable cleanup failed: {ex.Message}");
+            }
+        }
+    }
+}
