@@ -1,0 +1,50 @@
+<div class="container">
+  <h2 class="title">Board Games</h2>
+  <div class="search-container">
+    <input [formControl]="searchControl" placeholder="Search games..." class="search-input" />
+  </div>
+  <div *ngIf="noResults" class="error-message">
+    No games found matching "{{ searchTerm }}".
+  </div>
+  <div class="table-wrapper">
+    <table class="games-table">
+      <thead>
+        <tr>
+          <th>Thumbnail</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Our Sale Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let game of displayedGames">
+          <td>
+            <img [src]="game.Thumbnail" [alt]="game.Name" class="game-thumbnail" />
+          </td>
+          <td>{{ game.Name }}</td>
+          <td>{{ game.SalePrice | currency }}</td>
+          <td>{{ game.ourPrice | currency }}</td>
+        </tr>
+        <tr *ngIf="displayedGames.length === 0 && !noResults">
+          <td colspan="4">No games found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-button" (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <button
+      class="page-button"
+      *ngFor="let page of visiblePageNumbers"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    <button class="page-button" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
+</div>
