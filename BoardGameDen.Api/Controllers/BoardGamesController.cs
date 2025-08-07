@@ -22,7 +22,7 @@ namespace BoardGameDen.Api.Controllers
        public async Task<IActionResult> GetBoardGames(
        [FromQuery] string? search = "",
        [FromQuery] int page = 1,
-       [FromQuery] int pageSize = 20)
+       [FromQuery] int pageSize = 800)
         {
             var (boardGames, totalCount) =
                 await _boardGameService.GetBoardGamesAsync(search ?? "", page, pageSize);
