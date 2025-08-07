@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Angular
+BoardGameDen.Frontend/node_modules/
+BoardGameDen.Frontend/dist/
+BoardGameDen.Frontend/.angular/
